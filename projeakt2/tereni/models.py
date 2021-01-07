@@ -8,7 +8,7 @@ class Tereni(models.Model):
     mesto=models.CharField(max_length=200)
     tip=models.CharField(max_length=100)
     naziv_vode=models.CharField(max_length=200)
-    korisnik=models.CharField(max_length=200)
+    korisnikVode=models.CharField(max_length=200,default="")
     tip_dozvole=models.CharField(max_length=200)
     latituda=models.DecimalField(max_digits=10,decimal_places=8)
     longituda = models.DecimalField(max_digits=11, decimal_places=8)

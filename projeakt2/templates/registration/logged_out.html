@@ -1,0 +1,10 @@
+{%  extends 'master.html' %}
+
+{% block title %}
+    Dovidjenja!
+{% endblock %}
+
+{%  block content %}
+    <p>Izlogovali ste se</p>
+    <a href="{% url 'login'%}">Kliknite ovde za prijavu.</a>
+{%  endblock %}

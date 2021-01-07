@@ -1,0 +1,33 @@
+{% extends 'master.html' %}
+
+{% block content %}
+    {% if form.errors %}
+        <p>Nepravilno korisnicko ime ili sifra. Pokusajte opet.</p>
+    {% endif %}
+
+    {% if next %}
+        {% if user.is_authenticated %}
+            <p>Vas nalog nema pristup ovoj stranici. </p>
+        {% else %}
+            <p>Prijavite se kako bi videli ovu stranicu.</p>
+        {% endif %}
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}"/>
+
+        <div class="form-group">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+        </div>
+
+        <div class="form-group">
+            {{ form.password.label_tag }}
+            {{ form.password }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+<p>Nemate nalog? <a href="{% url 'register' %}"> Registrujte se ovde!</a> </p>
+{% endblock %}
