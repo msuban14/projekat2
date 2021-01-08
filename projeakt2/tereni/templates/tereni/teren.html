@@ -17,13 +17,17 @@
 
 {% if user.id == teren.korisnik.id %}
 <div class="btn-group">
+  {% if perms.tereni.change_tereni %}
   <a href="{% url 'edit_teren' teren.id %}" class="btn btn-primary">Izmeni</a>
-  <a href="#" class="btn btn-danger">Obrisi</a>
+  {% endif %}
+  {% if perms.tereni.delete_tereni %}
+  <a href="{% url 'delete_teren' teren.id %}" class="btn btn-danger">Obrisi</a>
+  {% endif %}
 </div>
 {% endif %}
 
 
-<h2>prikaz ocene i ponuda ocene, ukoliko nije ocenjeno</h2>
+
 
 <h2>Komentari</h2>
 {% for komentar in komentari %}
@@ -36,14 +40,18 @@
   </div>
   <div class="card-footer text-muted">
     {{komentar.updated_at}}
-    {% if user.id == teren.korisnik.id %}
+    {% if user.id == komentar.korisnik.id %}
+      {% if perms.tereni.change_komentari %}
       <a href="{% url 'edit_komentar' komentar.id %}" class="btn btn-outline-primary">Izmeni</a>
-      <a href="#" class="btn btn-outline-danger">Obrisi</a>
+      {% endif %}
+      {% if perms.tereni.delete_komentari %}
+      <a href="{% url 'delete_komentar' komentar.id %}" class="btn btn-outline-danger">Obrisi</a>
+      {% endif %}
     {% endif %}
   </div>
 </div>
 {% endfor %}
-
+{% if perms.tereni.add_komentari %}
 <a class="btn btn-primary" href="{% url 'add_komentar' teren.id %}" role="button">Ostavite komentar</a>
-
+{% endif %}
 {% endblock %}

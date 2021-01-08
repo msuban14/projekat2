@@ -1,0 +1,14 @@
+{% extends 'master.html' %}
+
+{% block title %}
+   Da li ste sigurni?
+{% endblock %}
+
+{% block content %}
+
+<form action="{% url 'delete_komentar' id %}" method="post">{% csrf_token %}
+    <p>Da li ste sigurni da zelite da obrisete poruku "{{komentar.sadrzaj}}"? Ova poruka je poslednji put modifikovana{{komentar.updated_at}}</p>
+    <input type="submit" value="Confirm" />
+</form>
+
+{% endblock %}

@@ -1,9 +1,11 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponseForbidden
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,permission_required
+from django.views import generic
+
 from .models import Tereni,Ocene,Komentari
 from django.db.models import Sum
 from .forms import TereniForm,OceneForm,KomentariForm
@@ -35,18 +37,12 @@ def tereni(request):
 @login_required
 def teren(request,id):
     t = get_object_or_404(Tereni,id=id)
-    #ocena filter i sum
-    #testirati posle
-    # o = Ocene.object.filter(teren_id = id)
-    # o_sum = 0
-    # o_count = o.count()
-    # if (o_count>0):
-    #     o_sum =
 
     #svi komentari
     k = Komentari.objects.filter(teren_id = id)
     return render(request,"tereni/teren.html",{"teren":t, "komentari":k,"page_title":t.naziv})
 
+@permission_required('tereni.add_tereni')
 def add_teren(request):
     if request.method == 'POST':
         form = TereniForm(request.POST)
@@ -62,6 +58,7 @@ def add_teren(request):
         form = TereniForm()
         return render(request, 'tereni/add_teren.html', {'form': form})
 
+@permission_required('tereni.add_komentari')
 def add_komentar(request,t_id):
 
     if request.method == 'POST':
@@ -81,6 +78,7 @@ def add_komentar(request,t_id):
         form = KomentariForm()
         return render(request, 'tereni/add_komentar.html', {'form': form, 'id':t_id})
 
+@permission_required('tereni.change_tereni')
 def edit_teren(request,id):
     if request.method == 'POST':
         form = TereniForm(request.POST)
@@ -105,6 +103,7 @@ def edit_teren(request,id):
         form = TereniForm(instance=t)
         return render(request, 'tereni/edit_teren.html', {'form': form, 'id': id})
 
+@permission_required('tereni.change_komentari')
 def edit_komentar(request,id):
     if request.method == 'POST':
         form = KomentariForm(request.POST)
@@ -121,13 +120,40 @@ def edit_komentar(request,id):
         form = KomentariForm(instance=k)
         return render(request, 'tereni/edit_komentar.html', {'form': form, 'id': id})
 
-#
+@permission_required('tereni.delete_tereni')
+def delete_teren1(request,id):
+    if request.method == "POST":
+        t = get_object_or_404(Tereni, id=id)
+        if request.user.id == t.korisnik.id or request.user.is_superuser:
+            t.delete()
+            return redirect('tereni')
+        else:
+            return HttpResponseForbidden("Nije Vam dozvoljeno da obrisete ovaj podatak")
+    else:
+        t = get_object_or_404(Tereni, id=id)
+        return render(request, 'tereni/delete_teren.html', {'id': id, 'teren':t})
 
-#def delete_teren(request)
+
+@permission_required('tereni.delete_komentari')
+def delete_komentar(request,id):
+    if request.method == "POST":
+        k = get_object_or_404(Komentari, id=id)
+        if request.user.id == k.korisnik.id or request.user.is_superuser:
+            k.delete()
+            return redirect('tereni')
+        else:
+            return HttpResponseForbidden("Nije Vam dozvoljeno da obrisete ovaj podatak")
+    else:
+        k = get_object_or_404(Komentari, id=id)
+
+        return render(request,'tereni/delete_komentar.html',{'id':id, 'komentar':k})
 
 
 
 
-#def delete_komentar(request)
+
+
+
+
 
 #def add_ocena(request)

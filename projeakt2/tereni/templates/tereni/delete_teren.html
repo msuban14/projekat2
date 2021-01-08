@@ -1,0 +1,14 @@
+{% extends 'master.html' %}
+
+{% block title %}
+   Brisanje terena?
+{% endblock %}
+
+{% block content %}
+
+<form action="{% url 'delete_teren' id %}" method="post">{% csrf_token %}
+    <p>Da li ste sigurni da zelite da obrisete teren {{teren}}?</p>
+    <input type="submit" value="Confirm" />
+</form>
+
+{% endblock %}
