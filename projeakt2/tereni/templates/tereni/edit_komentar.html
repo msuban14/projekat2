@@ -1,0 +1,15 @@
+{% extends 'master.html' %}
+
+{% block title %}
+   Izmeni teren
+{% endblock %}
+
+{% block content %}
+
+<form method="post" action="{% url 'edit_komentar' id %}">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" class="btn btn-primary btn-lg" value="Izmeni"/>
+</form>
+
+{% endblock %}

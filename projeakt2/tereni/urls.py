@@ -1,16 +1,22 @@
 from django.urls import path
 from . import views
 
+#app_name = "tereni"
 urlpatterns = [
-   # path('admin/', admin.site.urls),
+
     path('', views.index, name='tereni_index'),
     path('register/',views.register,name="register"),
-    #prikaz svih terena
-    #prikaz pojedinacnih terena sa komentarima i ocenama
+    path('tereni/', views.tereni, name='tereni'),
+    path('tereni/<int:id>/', views.teren, name='teren'),
+    path('tereni/add/', views.add_teren, name='add_teren'),
+    path('tereni/add_komentar/<int:t_id>', views.add_komentar, name='add_komentar'),
+    path('tereni/edit/<int:id>', views.edit_teren, name='edit_teren'),
+    path('tereni/edit_komentar/<int:id>', views.edit_komentar, name='edit_komentar'),
+    #path('tereni/edit/<int:id>', views.edit_teren, name='edit_teren'),
+    #path('tereni/edit_komentar/<int:id>', views.edit_komentar, name='edit_komentar')
+
+
     #dodavanje terena, komentara, ocene
     #izmena terena, komentara i ocena
-    #path('int/<int:br>',views.broj, name='tereni_broj'),
-    # path('int/',views.broj, name='tereni_broj_def'),
-    # path('params/', views.params, name='tereni_params'),
-    # path('hello/', views.hello, name='tereni_hello'),
+
 ]

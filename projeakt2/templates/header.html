@@ -1,7 +1,20 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <p>navigacija</p>
+    <a class="navbar-brand" href="{% url 'tereni' %}">
+        <img src="{% static 'img/rocket.png' %}" width="30" height="30" class="d-inline-block align-top" alt="logo"/>
+        Tereni za pecanje
+    </a>
+
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            {% if not perms.tereni.add_article %}
+                <a class="nav-link disabled" href="{% url 'add_teren' %}">Dodaj novi teren za pecanje</a>
+            {% else %}
+                <a class="nav-link" href="{% url 'add_teren' %}">Dodaj novi teren za pecanje</a>
+            {% endif %}
+        </li>
+    </ul>
 
     {% if user.is_authenticated %}
         <a class="nav-link" href="{% url 'logout' %}">Odjava {{ user.get_username }}</a>

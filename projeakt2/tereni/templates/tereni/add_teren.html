@@ -1,0 +1,15 @@
+{% extends 'master.html' %}
+
+{% block title %}
+   Novi teren
+{% endblock %}
+
+{% block content %}
+
+<form method="post" action="{% url 'add_teren' %}">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" class="btn btn-primary btn-lg" value="Dodaj"/>
+</form>
+
+{% endblock %}
